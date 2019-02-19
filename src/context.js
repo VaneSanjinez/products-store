@@ -7,14 +7,47 @@ const ProductContext = React.createContext();
 
 class ProductProvider extends Component {
   state = {
-    products: storeProducts,
+    products: [],
     detailProduct: detailProduct
+  };
+  componentDidMount() {
+    //Copy not referencing getting the ORIGINAL values
+    this.setProducts();
+  }
+  setProducts = () => {
+    //Getting new fresh data, instead of referece
+    let tempProducts = [];
+    storeProducts.forEach(item => {
+      const singleItem = { ...item }; //Here we are copying the values
+      tempProducts = [...tempProducts, singleItem];
+    });
+    this.setState(() => {
+      return { products: tempProducts };
+    });
   };
   handleDetail = () => {
     console.log("Hello from detail");
   };
   addToCart = () => {
     console.log("hello from add to cart");
+  };
+
+  tester = () => {
+    console.log("State products: ", this.state.products[0].inCart);
+    console.log("Data products: ", storeProducts[0].inCart);
+
+    const tempProducts = [...this.state.products];
+    tempProducts[0].inCart = true;
+    this.setState(
+      () => {
+        return { products: tempProducts };
+      },
+      () => {
+        //Correct values
+        console.log("State products: ", this.state.products[0].inCart);
+        console.log("Data products: ", storeProducts[0].inCart);
+      }
+    );
   };
   render() {
     //Note that value CAN be an object
@@ -26,6 +59,7 @@ class ProductProvider extends Component {
           addToCart: this.addToCart
         }}
       >
+        {/*<button onClick={this.tester}>Test me</button>*/}
         {this.props.children}
       </ProductContext.Provider>
     );
