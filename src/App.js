@@ -12,7 +12,7 @@ import ProductList from "./components/ProductList";
 
 class App extends Component {
   render() {
-    console.log(this.props.children);
+    //console.log(this.props.children);
     return (
       <React.Fragment>
         <Navbar />
